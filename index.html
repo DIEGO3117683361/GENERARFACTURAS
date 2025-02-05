@@ -12,15 +12,20 @@
       padding: 20px;
       background: #f5f7fa;
       color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
     .container {
       max-width: 800px;
-      margin: 0 auto;
+      width: 100%;
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       padding: 30px;
+      position: relative;
     }
 
     .hidden {
@@ -33,6 +38,12 @@
       border-radius: 8px;
       background: #fff;
       border: 1px solid #e0e4e9;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h2, h3 {
@@ -64,6 +75,7 @@
 
     input, select {
       width: 100%;
+      max-width: 720px; /* Ancho máximo para las casillas */
       padding: 12px;
       margin: 8px 0 15px 0;
       border: 2px solid #e0e4e9;
@@ -79,42 +91,37 @@
 
     /* Estilos para la factura */
     .receipt {
-      width: 300px;
+      width: 80mm; /* Ancho para impresora térmica de 80mm */
       margin: 20px auto;
-      border: 2px solid #007BFF;
-      border-radius: 10px;
-      padding: 20px;
+      padding: 10px;
       background: #fff;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .receipt:hover {
-      transform: scale(1.02);
+      font-size: 12px;
+      line-height: 1.4;
+      text-align: center; /* Centrar todo el contenido */
     }
 
     .receipt-header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .receipt-header img {
-      max-width: 120px;
+      max-width: 90px; /* Logo más grande */
       height: auto;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .receipt-header h2 {
       color: #007BFF;
-      font-size: 1.5em;
-      margin: 10px 0;
+      font-size: 14px;
+      margin: 5px 0;
     }
 
     .receipt-section {
-      margin: 15px 0;
-      padding: 10px;
+      margin: 10px 0;
+      padding: 5px 0;
       border-bottom: 1px dashed #e0e4e9;
+      text-align: left; /* Alinear texto a la izquierda */
     }
 
     .receipt-section:last-child {
@@ -124,60 +131,157 @@
     .receipt-section strong {
       color: #2c3e50;
       display: block;
-      margin-bottom: 5px;
-      font-size: 0.95em;
+      margin-bottom: 3px;
+      font-size: 11px;
     }
 
     .receipt-section span {
       color: #555;
-      font-size: 0.9em;
+      font-size: 11px;
     }
 
     .receipt-footer {
-      margin-top: 25px;
+      margin-top: 15px;
       text-align: center;
     }
 
     .receipt-footer .line {
       width: 70%;
-      border-top: 2px solid #007BFF;
-      margin: 15px auto;
+      border-top: 1px solid #007BFF;
+      margin: 10px auto;
       opacity: 0.7;
     }
 
     .footer-text {
       text-align: center;
-      margin-top: 25px;
+      margin-top: 15px;
       color: #007BFF;
       font-weight: bold;
-      font-size: 0.9em;
+      font-size: 10px;
     }
 
     #result-container {
       background: #f8f9fa;
-      padding: 15px;
+      padding: 10px;
       border-radius: 6px;
-      margin: 15px 0;
+      margin: 10px 0;
     }
 
     #result-container p {
-      margin: 8px 0;
+      margin: 5px 0;
       color: #444;
+      font-size: 12px;
+    }
+
+    /* Estilos para el mensaje de "Buscando..." */
+    .loading-message {
+      display: none;
+      text-align: center;
+      font-size: 14px;
+      color: #007BFF;
+      margin-top: 10px;
+    }
+
+    /* Estilos para el código de aliado en la esquina superior derecha */
+    .aliado-code {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 14px;
+      color: #007BFF;
+      font-weight: bold;
+      background: #e3f2fd;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #007BFF;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Estilos para impresión */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #receipt-section, #receipt-section * {
+        visibility: visible;
+      }
+      #receipt-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80mm; /* Ancho fijo para impresión */
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+      }
+      .receipt {
+        width: 100%;
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+      }
+      .receipt-header img {
+        max-width: 80px;
+      }
+      .receipt-header h2 {
+        font-size: 14px;
+      }
+      .receipt-section {
+        margin: 8px 0;
+        padding: 4px 0;
+      }
+      .receipt-section strong {
+        font-size: 11px;
+      }
+      .receipt-section span {
+        font-size: 11px;
+      }
+      .receipt-footer .line {
+        width: 50%;
+      }
+      .footer-text {
+        font-size: 10px;
+      }
+      .aliado-code {
+        display: none; /* Ocultar el código de aliado en la impresión */
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Página de bienvenida -->
+    <div id="welcome-section" class="section">
+      <div class="receipt-header">
+        <img src="https://www.dropbox.com/scl/fi/mgywqzbwl5ss5tubf5gv6/LOGO_COLOR.jpg.jpg?rlkey=bod3wghu6zprpeclld3p1dbkm&st=m5ah370n&dl=1" alt="Logo">
+      </div>
+      <h2>¡Te damos la bienvenida!</h2>
+      <p style="color: #666; margin-bottom: 20px;">Para continuar ingresa el código único que se te asignó como aliado para el recaudo.</p>
+      <input type="text" id="aliado-code" placeholder="Ingresa tu código de aliado">
+      <button class="button" onclick="validarAliado()">Ingresar</button>
+    </div>
+
     <!-- Página de búsqueda -->
-    <div id="search-section" class="section">
+    <div id="search-section" class="section hidden">
+      <div class="aliado-code">Código de aliado: <span id="aliado-actual"></span></div>
+      <div class="receipt-header">
+        <img src="https://www.dropbox.com/scl/fi/mgywqzbwl5ss5tubf5gv6/LOGO_COLOR.jpg.jpg?rlkey=bod3wghu6zprpeclld3p1dbkm&st=m5ah370n&dl=1" alt="Logo">
+      </div>
       <h2>Facturación en punto de pago</h2>
       <label for="nup">Ingrese la referencia de pago:</label>
       <input type="text" id="nup" placeholder="Ingrese el código NUP del cliente">
       <button class="button" onclick="buscarNUP()">Buscar</button>
+      <div id="loading-message" class="loading-message">Buscando...</div>
     </div>
 
     <!-- Página de facturación -->
     <div id="billing-section" class="section hidden">
+      <div class="aliado-code">Código de aliado: <span id="aliado-actual-billing"></span></div>
+      <div class="receipt-header">
+        <img src="https://www.dropbox.com/scl/fi/mgywqzbwl5ss5tubf5gv6/LOGO_COLOR.jpg.jpg?rlkey=bod3wghu6zprpeclld3p1dbkm&st=m5ah370n&dl=1" alt="Logo">
+      </div>
       <h2>Datos de facturación</h2>
       <div id="result-container">
         <!-- Aquí se mostrarán los datos del cliente -->
@@ -261,12 +365,34 @@
   </div>
 
   <script>
+    let aliadoCode = "";
+
+    const validarAliado = () => {
+      const codigo = document.getElementById('aliado-code').value.trim();
+      const codigosValidos = ["A100", "A101", "A102"];
+
+      if (codigosValidos.includes(codigo)) {
+        aliadoCode = codigo;
+        document.getElementById('aliado-actual').textContent = codigo;
+        document.getElementById('aliado-actual-billing').textContent = codigo;
+
+        document.getElementById('welcome-section').classList.add('hidden');
+        document.getElementById('search-section').classList.remove('hidden');
+      } else {
+        alert("Código de aliado no válido. Inténtalo de nuevo.");
+      }
+    };
+
     const buscarNUP = async () => {
       const nup = document.getElementById('nup').value;
       if (!nup) {
         alert("Por favor ingrese un Código NUP.");
         return;
       }
+
+      // Mostrar mensaje de "Buscando..."
+      document.getElementById('loading-message').style.display = 'block';
+
       try {
         const response = await fetch(`https://script.google.com/macros/s/AKfycbwdl_Q19ZqRP4b9UXXy9IOQCGRkrnfrWa0mP7df4LU17e-3o9VLrnG-e9wArUsut6_TQw/exec?code=${nup}`);
         const data = await response.json();
@@ -291,6 +417,9 @@
         }
       } catch (error) {
         alert("Error al buscar el Código NUP.");
+      } finally {
+        // Ocultar mensaje de "Buscando..."
+        document.getElementById('loading-message').style.display = 'none';
       }
     };
 
