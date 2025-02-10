@@ -216,7 +216,7 @@
         <img src="https://www.dropbox.com/scl/fi/mgywqzbwl5ss5tubf5gv6/LOGO_COLOR.jpg.jpg?rlkey=bod3wghu6zprpeclld3p1dbkm&st=m5ah370n&dl=1" alt="Logo">
       </div>
       <h2>¡Te damos la bienvenida!</h2>
-      <p style="color: #666; margin-bottom: 20px;">Ingrese su código de Aliado, si no lo tiene no podrá generar la facturación.</p>
+      <p style="color: #666; margin-bottom: 20px;">Para continuar ingresa el código único que se te asignó como aliado para el recaudo.</p>
       <input type="text" id="aliado-code" placeholder="Ingresa tu código de aliado">
       <button class="button" onclick="validarAliado()">Ingresar</button>
     </div>
@@ -489,7 +489,12 @@
             files: [file]
           });
         } else {
-          alert('Tu navegador no soporta compartir archivos directamente. Por favor, utiliza un navegador moderno.');
+          // Descargar el PDF si no se puede compartir
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(pdfBlob);
+          link.download = 'factura.pdf';
+          link.click();
+          alert('El PDF se ha descargado automáticamente.');
         }
       } catch (error) {
         console.error('Error al generar/compartir PDF:', error);
