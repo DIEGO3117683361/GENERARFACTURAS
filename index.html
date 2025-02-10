@@ -7,7 +7,7 @@
   <style>
     /* Estilos generales */
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Poppins', Arial, sans-serif;
       margin: 0;
       padding: 20px;
       background: #f5f7fa;
@@ -22,10 +22,11 @@
       max-width: 800px;
       width: 100%;
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
       padding: 30px;
       position: relative;
+      overflow: hidden;
     }
 
     .hidden {
@@ -35,7 +36,7 @@
     .section {
       margin-bottom: 30px;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
       background: #fff;
       border: 1px solid #e0e4e9;
       animation: fadeIn 0.5s ease-in-out;
@@ -55,6 +56,7 @@
       border-bottom: 2px solid #007BFF;
       padding-bottom: 10px;
       margin-bottom: 25px;
+      font-size: 24px;
     }
 
     .button {
@@ -62,42 +64,47 @@
       color: white;
       border: none;
       padding: 12px 25px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
       transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 16px;
     }
 
     .button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+      box-shadow: 0 6px 16px rgba(0,123,255,0.3);
     }
 
     input, select {
       width: 100%;
-      max-width: 720px; /* Ancho máximo para las casillas */
+      max-width: 720px;
       padding: 12px;
       margin: 8px 0 15px 0;
       border: 2px solid #e0e4e9;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 14px;
-      transition: border-color 0.3s;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
 
     input:focus, select:focus {
       border-color: #007BFF;
       outline: none;
+      box-shadow: 0 0 8px rgba(0,123,255,0.2);
     }
 
     /* Estilos para la factura */
     .receipt {
-      width: 80mm; /* Ancho para impresora térmica de 80mm */
+      width: 80mm;
       margin: 20px auto;
       padding: 10px;
       background: #fff;
       font-size: 12px;
       line-height: 1.4;
-      text-align: center; /* Centrar todo el contenido */
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
     }
 
     .receipt-header {
@@ -106,7 +113,7 @@
     }
 
     .receipt-header img {
-      max-width: 90px; /* Logo más grande */
+      max-width: 90px;
       height: auto;
       margin-bottom: 10px;
     }
@@ -121,7 +128,7 @@
       margin: 10px 0;
       padding: 5px 0;
       border-bottom: 1px dashed #e0e4e9;
-      text-align: left; /* Alinear texto a la izquierda */
+      text-align: left;
     }
 
     .receipt-section:last-child {
@@ -196,59 +203,10 @@
       border: 1px solid #007BFF;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    /* Estilos para impresión */
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-      #receipt-section, #receipt-section * {
-        visibility: visible;
-      }
-      #receipt-section {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 80mm; /* Ancho fijo para impresión */
-        margin: 0;
-        padding: 0;
-        box-shadow: none;
-        border: none;
-      }
-      .receipt {
-        width: 100%;
-        border: none;
-        box-shadow: none;
-        margin: 0;
-        padding: 0;
-      }
-      .receipt-header img {
-        max-width: 80px;
-      }
-      .receipt-header h2 {
-        font-size: 14px;
-      }
-      .receipt-section {
-        margin: 8px 0;
-        padding: 4px 0;
-      }
-      .receipt-section strong {
-        font-size: 11px;
-      }
-      .receipt-section span {
-        font-size: 11px;
-      }
-      .receipt-footer .line {
-        width: 50%;
-      }
-      .footer-text {
-        font-size: 10px;
-      }
-      .aliado-code {
-        display: none; /* Ocultar el código de aliado en la impresión */
-      }
-    }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -258,7 +216,7 @@
         <img src="https://www.dropbox.com/scl/fi/mgywqzbwl5ss5tubf5gv6/LOGO_COLOR.jpg.jpg?rlkey=bod3wghu6zprpeclld3p1dbkm&st=m5ah370n&dl=1" alt="Logo">
       </div>
       <h2>¡Te damos la bienvenida!</h2>
-      <p style="color: #666; margin-bottom: 20px;">Para continuar ingresa el código único que se te asignó como aliado para el recaudo.</p>
+      <p style="color: #666; margin-bottom: 20px;">Ingrese su código de Aliado, si no lo tiene no podrá generar la facturación.</p>
       <input type="text" id="aliado-code" placeholder="Ingresa tu código de aliado">
       <button class="button" onclick="validarAliado()">Ingresar</button>
     </div>
@@ -308,7 +266,7 @@
 
     <!-- Página de factura -->
     <div id="receipt-section" class="section hidden">
-      <div class="receipt" onclick="imprimirFactura()">
+      <div class="receipt" onclick="generarYCompartirPDF()">
         <div class="receipt-header">
           <img src="https://www.dropbox.com/scl/fi/mgywqzbwl5ss5tubf5gv6/LOGO_COLOR.jpg.jpg?rlkey=bod3wghu6zprpeclld3p1dbkm&st=m5ah370n&dl=1" alt="Logo">
           <h2>Factura de Caja</h2>
@@ -365,6 +323,7 @@
   </div>
 
   <script>
+    window.jspdf = window.jspdf.jsPDF;
     let aliadoCode = "";
 
     const validarAliado = () => {
@@ -390,7 +349,6 @@
         return;
       }
 
-      // Mostrar mensaje de "Buscando..."
       document.getElementById('loading-message').style.display = 'block';
 
       try {
@@ -404,7 +362,6 @@
             <p><strong>Nombre:</strong> ${data.propietario}</p>
             <p><strong>Documento:</strong> ${data.documento}</p>
           `;
-          // Autocompletar campos
           document.getElementById('concepto').value = data.concepto;
           document.getElementById('valor-obligacion').value = data.monto;
           document.getElementById('receipt-cliente').textContent = data.propietario;
@@ -418,7 +375,6 @@
       } catch (error) {
         alert("Error al buscar el Código de referencia NUP.");
       } finally {
-        // Ocultar mensaje de "Buscando..."
         document.getElementById('loading-message').style.display = 'none';
       }
     };
@@ -430,14 +386,12 @@
       const observaciones = document.getElementById('observaciones').value;
       const elaboradoPor = document.getElementById('elaborado-por').value;
 
-      // Actualizar la factura
       document.getElementById('receipt-fecha').textContent = fecha;
       document.getElementById('receipt-pagado').textContent = valorPagado;
       document.getElementById('receipt-metodo').textContent = metodoPago;
       document.getElementById('receipt-observaciones').textContent = observaciones;
       document.getElementById('receipt-elaborado').textContent = elaboradoPor;
 
-      // Enviar datos a Google Sheets
       const data = {
         aliadoCode: aliadoCode,
         cliente: document.getElementById('receipt-cliente').textContent,
@@ -467,13 +421,80 @@
         alert("Error al enviar los datos.");
       }
 
-      // Mostrar la factura
       document.getElementById('billing-section').classList.add('hidden');
       document.getElementById('receipt-section').classList.remove('hidden');
     };
 
-    const imprimirFactura = () => {
-      window.print();
+    const generarYCompartirPDF = async () => {
+      try {
+        const receiptElement = document.querySelector('.receipt');
+        
+        // Mostrar mensaje de carga
+        const loadingMessage = document.createElement('div');
+        loadingMessage.textContent = 'Generando PDF...';
+        loadingMessage.style.position = 'fixed';
+        loadingMessage.style.top = '20px';
+        loadingMessage.style.left = '50%';
+        loadingMessage.style.transform = 'translateX(-50%)';
+        loadingMessage.style.padding = '10px 20px';
+        loadingMessage.style.background = '#007BFF';
+        loadingMessage.style.color = 'white';
+        loadingMessage.style.borderRadius = '5px';
+        loadingMessage.style.zIndex = '1000';
+        document.body.appendChild(loadingMessage);
+
+        // Esperar a que la imagen se cargue completamente
+        const logo = document.querySelector('.receipt-header img');
+        await new Promise((resolve) => {
+          if (logo.complete) {
+            resolve();
+          } else {
+            logo.onload = resolve;
+          }
+        });
+
+        // Generar PDF
+        const pdf = new jspdf({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: [80, 297]
+        });
+
+        const canvas = await html2canvas(receiptElement, {
+          scale: 3,
+          useCORS: true,
+          logging: false
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 80;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        const pdfBlob = pdf.output('blob');
+
+        // Crear archivo para compartir
+        const file = new File([pdfBlob], 'factura.pdf', {
+          type: 'application/pdf'
+        });
+
+        // Eliminar mensaje de carga
+        document.body.removeChild(loadingMessage);
+
+        // Verificar si el navegador soporta compartir archivos
+        if (navigator.share && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: 'Factura de pago',
+            text: 'Aquí está tu factura generada',
+            files: [file]
+          });
+        } else {
+          alert('Tu navegador no soporta compartir archivos directamente. Por favor, utiliza un navegador moderno.');
+        }
+      } catch (error) {
+        console.error('Error al generar/compartir PDF:', error);
+        alert('Error al compartir la factura. Intente nuevamente.');
+      }
     };
   </script>
 </body>
