@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Facturación en punto aliado</title>
+  <title>Facturación Clientes PG</title>
   <style>
     /* Estilos generales */
     body {
@@ -203,10 +203,17 @@
       border: 1px solid #007BFF;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
+    /* Estilos para el código QR */
+    .qr-code {
+      margin-top: 10px;
+      text-align: center;
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -269,7 +276,7 @@
       <div class="receipt" onclick="generarYCompartirPDF()">
         <div class="receipt-header">
           <img src="https://www.dropbox.com/scl/fi/mgywqzbwl5ss5tubf5gv6/LOGO_COLOR.jpg.jpg?rlkey=bod3wghu6zprpeclld3p1dbkm&st=m5ah370n&dl=1" alt="Logo">
-          <h2>Factura de Caja</h2>
+          <h2>Recibo de Caja - Físico</h2>
         </div>
         <div class="receipt-section">
           <strong>Cliente:</strong>
@@ -313,6 +320,7 @@
         </div>
         <div class="receipt-footer">
           <div class="line"></div>
+          <div class="qr-code" id="qr-code"></div>
           <strong>Firma</strong>
         </div>
         <div class="footer-text">
@@ -420,6 +428,15 @@
       } catch (error) {
         alert("Error al enviar los datos.");
       }
+
+      // Generar el código QR
+      const qrCodeElement = document.getElementById('qr-code');
+      qrCodeElement.innerHTML = '';
+      new QRCode(qrCodeElement, {
+        text: 'https://bit.ly/CUENT4',
+        width: 100,
+        height: 100
+      });
 
       document.getElementById('billing-section').classList.add('hidden');
       document.getElementById('receipt-section').classList.remove('hidden');
